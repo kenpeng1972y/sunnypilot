@@ -264,7 +264,7 @@ class CAR(Platforms):
       VWCarInfo("Volkswagen Sharan 2018-22"),
       VWCarInfo("SEAT Alhambra 2018-20"),
     ],
-    specs=VolkswagenCarSpecs(mass=1639, wheelbase=2.92, minSteerSpeed=50*CV.KPH_TO_MS),
+    specs=VolkswagenCarSpecs(mass=1772, wheelbase=2.92, minSteerSpeed=0*CV.KPH_TO_MS),
   )
   TAOS_MK1 = VolkswagenMQBPlatformConfig(
     "VOLKSWAGEN TAOS 1ST GEN",  # Chassis B2

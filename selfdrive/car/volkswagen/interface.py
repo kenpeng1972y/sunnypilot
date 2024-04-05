@@ -29,6 +29,7 @@ class CarInterface(CarInterfaceBase):
   def _get_params(ret, candidate, fingerprint, car_fw, experimental_long, docs):
     ret.carName = "volkswagen"
     ret.radarUnavailable = True
+    ret.enableGasInterceptor = False
 
     if candidate in PQ_CARS:
       # Set global PQ35/PQ46/NMS parameters
@@ -78,6 +79,8 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 0.4
     if candidate in PQ_CARS:
       ret.steerActuatorDelay = 0.2
+      ret.enableGasInterceptor = True
+      ret.autoResumeSng = True
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
     else:
       ret.steerActuatorDelay = 0.1
@@ -115,7 +118,7 @@ class CarInterface(CarInterfaceBase):
 
     # Per-chassis tuning values, override tuning defaults here if desired
 
-    ret.autoResumeSng = ret.minEnableSpeed == -1
+    ret.autoResumeSng = ret.minEnableSpeed == -1 or ret.enableGasInterceptor
     ret.centerToFront = ret.wheelbase * 0.45
     return ret
 

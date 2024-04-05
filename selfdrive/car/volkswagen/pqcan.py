@@ -1,3 +1,5 @@
+from selfdrive.car import crc8_pedal
+
 def create_steering_control(packer, bus, apply_steer, lkas_enabled):
   values = {
     "LM_Offset": abs(apply_steer),
@@ -111,3 +113,25 @@ def create_acc_hud_control(packer, bus, acc_hud_status, set_speed, lead_distance
   }
 
   return packer.make_can_msg("ACC_GRA_Anzeige", bus, values)
+
+def create_pedal_control(packer, bus, apply_gas, idx):
+  # Common gas pedal msg generator
+  enable = apply_gas > 0.001
+
+  values = {
+    "ENABLE": enable,
+    "COUNTER_PEDAL": idx & 0xF,
+  }
+
+  if enable:
+    if (apply_gas < 227):
+      apply_gas = 227
+    values["GAS_COMMAND"] = apply_gas
+    values["GAS_COMMAND2"] = apply_gas
+
+  dat = packer.make_can_msg("GAS_COMMAND", bus, values)[2]
+
+  checksum = crc8_pedal(dat[:-1])
+  values["CHECKSUM_PEDAL"] = checksum
+
+  return packer.make_can_msg("GAS_COMMAND", bus, values)
