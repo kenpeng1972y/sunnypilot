@@ -149,6 +149,8 @@ class CarController:
       accel = clip(actuators.accel, self.CCP.ACCEL_MIN, self.CCP.ACCEL_MAX) if CC.longActive else 0
       stopping = actuators.longControlState == LongCtrlState.stopping
       accel = clip(self.CP.stopAccel, self.CCP.ACCEL_MIN, self.CCP.ACCEL_MAX) if CC.longActive and CS.out.standstill else accel
+      accel = clip(self.CP.stopAccel, self.CCP.ACCEL_MIN, self.CCP.ACCEL_MAX) if CC.longActive and starting and (CS.out.vEgo <3) else accel
+      stopping = True if CC.longActive and (CS.out.standstill or (CS.out.vEgo <3)) else stopping
       starting = actuators.longControlState == LongCtrlState.pid and (CS.esp_hold_confirmation or CS.out.vEgo < self.CP.vEgoStopping)
       can_sends.extend(self.CCS.create_acc_accel_control(self.packer_pt, CANBUS.pt, CS.acc_type, CC.longActive, accel,
                                                          acc_control, stopping, starting, CS.esp_hold_confirmation))
