@@ -185,7 +185,7 @@ class CarController:
           powerNeeded = int(round(powerNeeded * powerNeeded_mult))
           apply_gas = int(round(interp(powerNeeded, POWER_LOOKUP_BP, PEDAL_LOOKUP_BP)))
           apply_gas = int(round(apply_gas * int(round(interp(speed, GAS_MULTIPLIER_BP, GAS_MULTIPLIER_V)))))
-          self.gas = apply_gas if apply_gas > 3.0 else 3.0
+          self.gas = apply_gas if apply_gas < 1250 else 1250
         else:
           self.gas = 0.0
         can_sends.append(self.CCS.create_gas_control(self.packer_pt,  CANBUS.pt, apply_gas, self.frame // 2))
