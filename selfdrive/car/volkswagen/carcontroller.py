@@ -188,7 +188,7 @@ class CarController:
           self.gas = apply_gas if apply_gas < 1000 else 1000
         else:
           self.gas = 0.0
-        can_sends.append(self.CCS.create_gas_control(self.packer_pt,  CANBUS.pt, apply_gas, self.frame // 2))
+        can_sends.append(self.CCS.create_pedal_control(self.packer_pt,  CANBUS.pt, apply_gas, self.frame // 2))
         #can_sends.append(create_gas_interceptor_command(self.packer_pt, self.gas, self.frame // 2))
 
     # **** HUD Controls ***************************************************** #
